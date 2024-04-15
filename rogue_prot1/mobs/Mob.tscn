@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://dcdogeotgcks2"]
+
+[ext_resource type="Script" path="res://mobs/Mob.gd" id="1_8t1qp"]
+[ext_resource type="PackedScene" uid="uid://dy31x4iqmm5am" path="res://arts/mobs/Skeleton_Minion.glb" id="1_vbvqu"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_28g0u"]
+radius = 0.34431
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_gmrph"]
+radius = 70.0
+
+[node name="Mob" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 7
+script = ExtResource("1_8t1qp")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Model" parent="Pivot" instance=ExtResource("1_vbvqu")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00169, 0)
+shape = SubResource("CylinderShape3D_28g0u")
+
+[node name="Visao" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 9
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Visao"]
+shape = SubResource("SphereShape3D_gmrph")
+
+[connection signal="body_entered" from="Visao" to="." method="_on_area_3d_body_entered"]

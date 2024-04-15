@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://dmh63w2vxvip0"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_dtohf"]
+[ext_resource type="PackedScene" uid="uid://c0d5gyh5ojqq3" path="res://Scenes/Player/player.tscn" id="1_k54o2"]
+[ext_resource type="PackedScene" uid="uid://dcdogeotgcks2" path="res://mobs/Mob.tscn" id="2_kvodr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sw6fo"]
+size = Vector3(160, 2, 160)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xfg24"]
+size = Vector3(160, 2, 160)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_55k7f"]
+albedo_color = Color(0.329412, 0.14902, 0.0588235, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_p6mj1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_nymsd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_squl0"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_dtohf")
+mob = ExtResource("2_kvodr")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_sw6fo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_xfg24")
+surface_material_override/0 = SubResource("StandardMaterial3D_55k7f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.983066, -0.170199, -0.0679269, -0.00539791, -0.343617, 0.939095, -0.183174, 0.923558, 0.33688, -8, 12, -19)
+shadow_enabled = true
+
+[node name="Player" parent="." groups=["player"] instance=ExtResource("1_k54o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="CameraPivot" type="Marker3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 0.857168, 0.515038, 0, -0.515038, 0.857168, 0, 4.28321, 4.37336)
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraPivot"]
+transform = Transform3D(1, 0, 7.10543e-15, -1.05879e-22, 0.999999, 0, -7.10543e-15, 0, 0.999999, 0, 1.24684, 15.6896)
+current = true
+fov = 44.0
+size = 28.927
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7976, 0, 4.49952)
+mesh = SubResource("CylinderMesh_p6mj1")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.4898, 0, 31.5643)
+collision_layer = 4
+collision_mask = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("BoxMesh_nymsd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_squl0")

@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://qy8kr6ajqh8e"]
+
+[ext_resource type="Script" path="res://template/lobby.gd" id="1_dhqui"]
+
+[node name="Lobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dhqui")
+
+[node name="message" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -44.0
+offset_top = -42.0
+offset_right = 44.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Connecting	..."
