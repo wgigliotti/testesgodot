@@ -43,12 +43,12 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 
 [node name="CameraPivot" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 0.857168, 0.515038, 0, -0.515038, 0.857168, 0, 4.28321, 4.37336)
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 11.5344, 2.18488)
 
 [node name="Camera3D" type="Camera3D" parent="Player/CameraPivot"]
 transform = Transform3D(1, 0, 7.10543e-15, -1.05879e-22, 0.999999, 0, -7.10543e-15, 0, 0.999999, 0, 1.24684, 15.6896)
 current = true
-fov = 44.0
+fov = 56.6
 size = 28.927
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

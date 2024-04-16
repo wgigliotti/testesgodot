@@ -19,7 +19,7 @@ radius = 2.31661
 height = 2.31392
 radius = 0.601632
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["players"]]
 collision_mask = 4
 script = ExtResource("1_xaepj")
 
@@ -59,7 +59,7 @@ attack = NodePath("CharacterAttack")
 
 [node name="CharacterAttack" type="Node" parent="FiniteStateMachine/Signature"]
 script = ExtResource("9_njrah")
-damage = 10.0
+damage = 30.0
 
 [node name="CharacterSheet" type="Node" parent="."]
 script = ExtResource("9_hg5h2")

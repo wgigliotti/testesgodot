@@ -24,15 +24,25 @@ signal hit
 func get_signature_area():
 	return signature_area
 
-func change_hp(from, to):
-	print("Changed HP: " + str(from) + " to " + str(to))
+
 
 func _ready():
 	fsm.start_running(self)
-	character_sheet.connect_signal_for_property("max_health", change_hp)
+	
 	var max_health = character_sheet.get_value("max_health")
+	character_sheet.set_value("health", max_health)
 	healthbar.update_max(max_health)
 	healthbar.update_healthbar(max_health)
+	
+	character_sheet.connect_signal_for_property("health", _on_health_change)
+	healthbar.update_max(max_health)
+	healthbar.update_healthbar(max_health)
+	
+	healthbar.fx_show_value()
+	
+func _on_health_change(from, to):
+	healthbar.update_healthbar(to)
+	print(self.name + ": Mob heath from " + str(from) + " to " + str(to))	
 	
 
 func setAnimation(animationName, speed_scale = 1, start_time=null, end_time=null):

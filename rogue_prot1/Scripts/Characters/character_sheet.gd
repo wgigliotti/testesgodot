@@ -16,7 +16,7 @@ func connect_signal_for_property(property_name, callable : Callable):
 		signals[property_name] = new_signal_for
 	
 	var signal_to_connect = signals[property_name]
-	var response = signal_to_connect.connect(callable)
+	signal_to_connect.connect(callable)
 	
 	return signals[property_name]
 	
@@ -37,7 +37,7 @@ func get_value(property_name):
 	
 	return sheet[property_name]
 		
-func apply_hit(baddie : CharacterSheet, attack : CharacterAttack):
+func apply_hit(_baddie : CharacterSheet, attack : CharacterAttack):
 	var health = get_value("health") - attack.damage
 	set_value("health", health)
 

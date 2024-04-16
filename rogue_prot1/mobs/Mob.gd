@@ -1,12 +1,13 @@
 extends CharacterBody3D
 
 
-const SPEED = 20.0
+const SPEED = 5.0
 
 @onready var visao = $Visao
 
 @onready var animationPlayer = $Pivot/Model.get_node("AnimationPlayer")
 @onready var healthbar = $HealthBar3D
+@onready var attack_area = $Pivot/AttackArea
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -16,6 +17,7 @@ var to_chase
 var objective : Vector3
 var forget_distance = 90*90
 var alive = true
+var la = 0
 
 @onready var character_sheet = $CharacterSheet
 
@@ -36,6 +38,20 @@ func _on_health_change(from, to):
 		alive = false
 		return
 		
+func checkAttacking(delta):
+	var attack_animation = "1H_Melee_Attack_Chop"
+	if animationPlayer.is_playing() and animationPlayer.current_animation == attack_animation:
+		return true
+	
+	if ! attack_area.has_overlapping_bodies():
+		return false
+		
+	for target in attack_area.get_overlapping_bodies():
+		if target.is_in_group("players"):
+			animationPlayer.play(attack_animation)
+			target.character_sheet.apply_hit(self.character_sheet, $BasicAttack)
+			return true
+	
 func _physics_process(delta):
 	if ! alive:
 		return
@@ -44,6 +60,11 @@ func _physics_process(delta):
 	
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+		
+	if checkAttacking(delta):
+		return
+	
+	
 	
 	if to_chase != null:
 		var dir : Vector3 = to_chase.global_position - self.global_position		
