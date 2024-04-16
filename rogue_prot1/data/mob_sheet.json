@@ -1,0 +1,6 @@
+{
+	"max_health" : 200,
+	"damage": 5,
+	"armor": 0,
+	"magic_resist": 0.3
+}

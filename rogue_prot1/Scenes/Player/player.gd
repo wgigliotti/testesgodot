@@ -11,6 +11,9 @@ extends CharacterBody3D
 
 @onready var animationPlayer = $Pivot/Barbarian.get_node("AnimationPlayer")
 @onready var fsm = $FiniteStateMachine
+@onready var character_sheet = $CharacterSheet
+@onready var signature_area = $Pivot/SignatureArea
+@onready var healthbar = $HealthBar3D
 
 var target_velocity = Vector3.ZERO
 var dashing = false
@@ -18,8 +21,19 @@ var dashing_time
 var last_look = Vector3(1,0,0)
 signal hit
 
+func get_signature_area():
+	return signature_area
+
+func change_hp(from, to):
+	print("Changed HP: " + str(from) + " to " + str(to))
+
 func _ready():
 	fsm.start_running(self)
+	character_sheet.connect_signal_for_property("max_health", change_hp)
+	var max_health = character_sheet.get_value("max_health")
+	healthbar.update_max(max_health)
+	healthbar.update_healthbar(max_health)
+	
 
 func setAnimation(animationName, speed_scale = 1, start_time=null, end_time=null):
 	if !animationPlayer.is_playing() or animationPlayer.current_animation != animationName:
@@ -44,7 +58,7 @@ func look(to : Vector3):
 	
 	
 func _physics_process(delta):	
-	fsm.run(delta)
+	fsm.run(delta)	
 	
 	if !is_on_floor():
 		target_velocity.y = target_velocity.y - (fall_acceleration * delta)

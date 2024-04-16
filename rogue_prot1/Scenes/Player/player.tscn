@@ -1,16 +1,19 @@
-[gd_scene load_steps=11 format=3 uid="uid://c0d5gyh5ojqq3"]
+[gd_scene load_steps=14 format=3 uid="uid://c0d5gyh5ojqq3"]
 
 [ext_resource type="Script" path="res://Scripts/FSM.gd" id="1_x073b"]
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_xaepj"]
 [ext_resource type="PackedScene" uid="uid://ddbhwoh51a4n0" path="res://barbarian.tscn" id="2_45fux"]
-[ext_resource type="Texture2D" uid="uid://drd7epgi26fbe" path="res://arts/healthbar.png" id="3_opyki"]
 [ext_resource type="Script" path="res://Scenes/Player/scripts/states/player_state_idle.gd" id="5_6dw5l"]
 [ext_resource type="Script" path="res://Scenes/Player/scripts/states/player_state_running.gd" id="6_l0n2j"]
 [ext_resource type="Script" path="res://Scenes/Player/scripts/states/player_state_dashing.gd" id="7_wneyt"]
 [ext_resource type="Script" path="res://Scenes/Player/scripts/states/player_state_signature.gd" id="8_38hxv"]
+[ext_resource type="Script" path="res://Scripts/Characters/character_sheet.gd" id="9_hg5h2"]
+[ext_resource type="Script" path="res://Scripts/Characters/attack.gd" id="9_njrah"]
+[ext_resource type="JSON" path="res://data/barbarian_sheet.json" id="10_ik5cp"]
+[ext_resource type="PackedScene" uid="uid://c58uk1qnf4bn3" path="res://health_bar_3d.tscn" id="11_5wrr6"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5mdfb"]
-radius = 2.122
+radius = 2.31661
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_45bhp"]
 height = 2.31392
@@ -36,12 +39,6 @@ shape = SubResource("SphereShape3D_5mdfb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.20189, 0)
 shape = SubResource("CylinderShape3D_45bhp")
 
-[node name="Healthbar" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.67625, -1.49407)
-billboard = 1
-shaded = true
-texture = ExtResource("3_opyki")
-
 [node name="FiniteStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("1_x073b")
 initial_state = NodePath("Idle")
@@ -56,5 +53,17 @@ script = ExtResource("6_l0n2j")
 [node name="Dashing" type="Node" parent="FiniteStateMachine"]
 script = ExtResource("7_wneyt")
 
-[node name="Signature" type="Node" parent="FiniteStateMachine"]
+[node name="Signature" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("attack")]
 script = ExtResource("8_38hxv")
+attack = NodePath("CharacterAttack")
+
+[node name="CharacterAttack" type="Node" parent="FiniteStateMachine/Signature"]
+script = ExtResource("9_njrah")
+damage = 10.0
+
+[node name="CharacterSheet" type="Node" parent="."]
+script = ExtResource("9_hg5h2")
+sheet_data = ExtResource("10_ik5cp")
+
+[node name="HealthBar3D" parent="." instance=ExtResource("11_5wrr6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.18006, 0)
