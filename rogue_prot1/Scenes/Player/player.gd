@@ -27,7 +27,8 @@ func get_signature_area():
 
 
 func _ready():
-	fsm.start_running(self)
+	fsm.start_running(self)	
+		
 	
 	var max_health = character_sheet.get_value("max_health")
 	character_sheet.set_value("health", max_health)

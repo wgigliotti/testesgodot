@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://dcdogeotgcks2"]
 
 [ext_resource type="Script" path="res://mobs/Mob.gd" id="1_8t1qp"]
-[ext_resource type="PackedScene" uid="uid://dy31x4iqmm5am" path="res://arts/mobs/Skeleton_Rogue.glb" id="1_vbvqu"]
+[ext_resource type="PackedScene" uid="uid://duwjutwsdm3ha" path="res://skeleton_rogue.tscn" id="2_mwiu2"]
 [ext_resource type="Script" path="res://Scripts/Characters/character_sheet.gd" id="3_p0lxp"]
 [ext_resource type="JSON" path="res://data/mob_sheet.json" id="4_fugpx"]
 [ext_resource type="PackedScene" uid="uid://c58uk1qnf4bn3" path="res://health_bar_3d.tscn" id="5_nh0b5"]
@@ -23,15 +23,15 @@ script = ExtResource("1_8t1qp")
 
 [node name="Pivot" type="Node3D" parent="."]
 
-[node name="Model" parent="Pivot" instance=ExtResource("1_vbvqu")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
 [node name="AttackArea" type="Area3D" parent="Pivot"]
 collision_layer = 0
+monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/AttackArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00848389, 0.560318, -0.775725)
 shape = SubResource("BoxShape3D_rml2n")
+
+[node name="Model" parent="Pivot" instance=ExtResource("2_mwiu2")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00169, 0)

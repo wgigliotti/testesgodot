@@ -13,7 +13,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if Input.is_action_just_pressed("mob"):
-		for i in 1:
+		for i in 10:
 			createNewMob()
 		nextMob = Time.get_ticks_msec() + randi_range(0, 1000)
 		

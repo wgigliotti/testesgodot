@@ -39,7 +39,7 @@ func _on_health_change(from, to):
 		return
 		
 func checkAttacking(delta):
-	var attack_animation = "1H_Melee_Attack_Chop"
+	var attack_animation = "1H_Melee_Attack_Stab"
 	if animationPlayer.is_playing() and animationPlayer.current_animation == attack_animation:
 		return true
 	
@@ -86,10 +86,13 @@ func _physics_process(delta):
 func _on_area_3d_body_entered(body):	
 	if to_chase == null: 
 		to_chase = body
+	visao.monitoring = false
 
 
 func forget():	
-	to_chase = get_next_target()
+	to_chase = null
+	$AttackArea.monitoring = true
+	
 	
 		
 func get_next_target():

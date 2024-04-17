@@ -82,10 +82,6 @@ visible = false
 [node name="2H_Axe" parent="Rig/Skeleton3D" index="2"]
 transform = Transform3D(0.618986, 0.785401, 0.000629142, -0.000621972, 0.00129091, -0.999999, -0.785401, 0.618985, 0.00128739, -0.24379, 0.878725, 0.642505)
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Rig/Skeleton3D/2H_Axe" index="1"]
-transform = Transform3D(1, -2.98023e-08, -1.16415e-09, 5.96046e-08, 1, 6.98492e-10, 1.04774e-09, 0, 1, -0.0426648, 1.25098, 0.00164157)
-amount = 14
-
 [node name="Mug" parent="Rig/Skeleton3D" index="3"]
 transform = Transform3D(0.618986, 0.785401, 0.000629142, -0.000621972, 0.00129091, -0.999999, -0.785401, 0.618985, 0.00128739, -0.468278, 0.878849, 0.848273)
 visible = false
