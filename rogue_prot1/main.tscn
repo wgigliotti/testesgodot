@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dmh63w2vxvip0"]
+[gd_scene load_steps=12 format=3 uid="uid://dmh63w2vxvip0"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_dtohf"]
 [ext_resource type="PackedScene" uid="uid://c0d5gyh5ojqq3" path="res://Scenes/Player/player.tscn" id="1_k54o2"]
 [ext_resource type="PackedScene" uid="uid://dcdogeotgcks2" path="res://mobs/Mob.tscn" id="2_kvodr"]
+[ext_resource type="Script" path="res://Scripts/State.gd" id="4_8arym"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_0yd4n"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sw6fo"]
 size = Vector3(160, 2, 160)
@@ -40,19 +42,19 @@ transform = Transform3D(-0.983066, -0.170199, -0.0679269, -0.00539791, -0.343617
 shadow_enabled = true
 
 [node name="Player" parent="." groups=["player"] instance=ExtResource("1_k54o2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.33993, 0, 5.83946)
 
 [node name="CameraPivot" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 0.909962, 0.414693, 0, -0.414693, 0.909962, 0, 7.79511, 2.18488)
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 5, 2)
 
 [node name="Camera3D" type="Camera3D" parent="Player/CameraPivot"]
-transform = Transform3D(1, 8.47033e-22, 7.10543e-15, 1.38863e-15, 0.980717, -0.195433, -6.96842e-15, 0.195433, 0.980717, 0, -5.11809, 13.3576)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 current = true
-fov = 30.3
+fov = 82.9
 size = 28.927
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7976, 0, 4.49952)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.289061, 0, -4.16602)
 mesh = SubResource("CylinderMesh_p6mj1")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
@@ -65,3 +67,15 @@ mesh = SubResource("BoxMesh_nymsd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("BoxShape3D_squl0")
+
+[node name="State" type="Node" parent="."]
+script = ExtResource("4_8arym")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("5_0yd4n")]
+offset_left = 916.0
+offset_top = 5.0
+offset_right = -4.0
+offset_bottom = -296.0
+initial_node_to_watch = NodePath("../Player")

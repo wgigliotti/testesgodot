@@ -1,16 +1,16 @@
 [gd_scene load_steps=14 format=3 uid="uid://c0d5gyh5ojqq3"]
 
-[ext_resource type="Script" path="res://Scripts/FSM.gd" id="1_x073b"]
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_xaepj"]
 [ext_resource type="PackedScene" uid="uid://ddbhwoh51a4n0" path="res://barbarian.tscn" id="2_45fux"]
-[ext_resource type="Script" path="res://Scenes/Player/scripts/states/player_state_idle.gd" id="5_6dw5l"]
-[ext_resource type="Script" path="res://Scenes/Player/scripts/states/player_state_running.gd" id="6_l0n2j"]
-[ext_resource type="Script" path="res://Scenes/Player/scripts/states/player_state_dashing.gd" id="7_wneyt"]
-[ext_resource type="Script" path="res://Scenes/Player/scripts/states/player_state_signature.gd" id="8_38hxv"]
 [ext_resource type="Script" path="res://Scripts/Characters/character_sheet.gd" id="9_hg5h2"]
 [ext_resource type="Script" path="res://Scripts/Characters/attack.gd" id="9_njrah"]
 [ext_resource type="JSON" path="res://data/barbarian_sheet.json" id="10_ik5cp"]
 [ext_resource type="PackedScene" uid="uid://c58uk1qnf4bn3" path="res://health_bar_3d.tscn" id="11_5wrr6"]
+[ext_resource type="Script" path="res://Skills/spin.gd" id="11_t717q"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="12_wyptb"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="13_ly4yk"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="14_dwjvq"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="15_wnpul"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5mdfb"]
 radius = 2.31661
@@ -39,31 +39,68 @@ shape = SubResource("SphereShape3D_5mdfb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.20189, 0)
 shape = SubResource("CylinderShape3D_45bhp")
 
-[node name="FiniteStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("1_x073b")
-initial_state = NodePath("Idle")
-auto_run = false
-
-[node name="Idle" type="Node" parent="FiniteStateMachine"]
-script = ExtResource("5_6dw5l")
-
-[node name="Running" type="Node" parent="FiniteStateMachine"]
-script = ExtResource("6_l0n2j")
-
-[node name="Dashing" type="Node" parent="FiniteStateMachine"]
-script = ExtResource("7_wneyt")
-
-[node name="Signature" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("attack")]
-script = ExtResource("8_38hxv")
-attack = NodePath("CharacterAttack")
-
-[node name="CharacterAttack" type="Node" parent="FiniteStateMachine/Signature"]
-script = ExtResource("9_njrah")
-damage = 30.0
-
 [node name="CharacterSheet" type="Node" parent="."]
 script = ExtResource("9_hg5h2")
 sheet_data = ExtResource("10_ik5cp")
 
 [node name="HealthBar3D" parent="." instance=ExtResource("11_5wrr6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.18006, 0)
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("12_wyptb")
+
+[node name="CompoundState" type="Node" parent="StateChart"]
+script = ExtResource("13_ly4yk")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("14_dwjvq")
+
+[node name="Run" type="Node" parent="StateChart/CompoundState/Idle"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Running")
+event = &"run"
+
+[node name="Signature" type="Node" parent="StateChart/CompoundState/Idle"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Signature")
+event = &"signature"
+
+[node name="Running" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("14_dwjvq")
+
+[node name="Stop" type="Node" parent="StateChart/CompoundState/Running"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Idle")
+event = &"stop"
+
+[node name="Signature" type="Node" parent="StateChart/CompoundState/Running"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Signature")
+event = &"signature"
+
+[node name="Signature" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("14_dwjvq")
+
+[node name="idle" type="Node" parent="StateChart/CompoundState/Signature"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Idle")
+event = &"idle"
+
+[node name="SignatureSkill" type="Node" parent="." node_paths=PackedStringArray("attack")]
+script = ExtResource("11_t717q")
+attack = NodePath("CharacterAttack")
+
+[node name="CharacterAttack" type="Node" parent="SignatureSkill"]
+script = ExtResource("9_njrah")
+damage = 30.0
+
+[node name="Skill" type="Node3D" parent="."]
+
+[connection signal="state_entered" from="StateChart/CompoundState/Idle" to="." method="_on_idle_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Idle" to="." method="_on_idle_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Running" to="." method="_on_running_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Running" to="." method="_on_running_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Signature" to="." method="_on_signature_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/Signature" to="." method="_on_signature_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Signature" to="." method="_on_signature_state_physics_processing"]
