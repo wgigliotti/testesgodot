@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://j0wwf4vv06py"]
+
+[ext_resource type="Script" path="res://Scenes/Mobs/mob_engine.gd" id="1_p5lim"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_six7o"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_x5ql8"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_86fx6"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_uxuqp"]
+
+[node name="MobEngine" type="Node"]
+script = ExtResource("1_p5lim")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("3_six7o")
+
+[node name="CompoundState" type="Node" parent="StateChart"]
+script = ExtResource("4_x5ql8")
+initial_state = NodePath("Traversing")
+
+[node name="Traversing" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_86fx6")
+
+[node name="die" type="Node" parent="StateChart/CompoundState/Traversing"]
+script = ExtResource("6_uxuqp")
+to = NodePath("../../Dead")
+event = &"die"
+
+[node name="chase" type="Node" parent="StateChart/CompoundState/Traversing"]
+script = ExtResource("6_uxuqp")
+to = NodePath("../../Chasing")
+event = &"chase"
+
+[node name="Chasing" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_86fx6")
+
+[node name="die" type="Node" parent="StateChart/CompoundState/Chasing"]
+script = ExtResource("6_uxuqp")
+to = NodePath("../../Dead")
+event = &"die"
+
+[node name="forget_target" type="Node" parent="StateChart/CompoundState/Chasing"]
+script = ExtResource("6_uxuqp")
+to = NodePath("../../Traversing")
+event = &"forget"
+
+[node name="attack" type="Node" parent="StateChart/CompoundState/Chasing"]
+script = ExtResource("6_uxuqp")
+to = NodePath("../../Attacking")
+event = &"attack"
+
+[node name="Attacking" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_86fx6")
+
+[node name="die" type="Node" parent="StateChart/CompoundState/Attacking"]
+script = ExtResource("6_uxuqp")
+to = NodePath("../../Dead")
+event = &"die"
+
+[node name="chase" type="Node" parent="StateChart/CompoundState/Attacking"]
+script = ExtResource("6_uxuqp")
+to = NodePath("../../Chasing")
+event = &"chase"
+
+[node name="Dead" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("5_86fx6")
+
+[connection signal="state_entered" from="StateChart/CompoundState/Traversing" to="." method="_on_traversing_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Traversing" to="." method="_on_traversing_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Chasing" to="." method="_on_chasing_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/Chasing" to="." method="_on_chasing_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Chasing" to="." method="_on_chasing_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Attacking" to="." method="_on_attacking_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/Attacking" to="." method="_on_attacking_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Attacking" to="." method="_on_attacking_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Dead" to="." method="_on_dead_state_entered"]

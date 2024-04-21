@@ -3,7 +3,7 @@ extends CharacterBody3D
 # How fast the player moves in meters per second.
 @export var speed = 14
 # The downward acceleration when in the air, in meters per second squared.
-@export var fall_acceleration = 75
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var animationPlayer = $Pivot/Barbarian.get_node("AnimationPlayer")
 @onready var character_sheet = $CharacterSheet
@@ -63,19 +63,23 @@ func getPivot():
 func look(to : Vector3):
 	last_look = to
 	
-func move(move_speed):
+func move(move_speed, delta):
 	move_speed = move_speed * speed
 	target_velocity = direction * move_speed
 	velocity = target_velocity
+	
+	if not is_on_floor():
+		velocity.y -= gravity * delta
 	move_and_slide()
 	
-func _physics_process(delta):	
+func _physics_process(_delta):	
 	update_direction()
 	setAnimation(active_animation.name, active_animation.scale, active_animation.start, active_animation.end )	
 
 	if Input.is_action_just_pressed("ui_jump"):
 		stateChart.send_event("signature")		
-		
+	
+	
 
 
 func update_direction():
@@ -114,7 +118,7 @@ func _on_running_state_physics_processing(delta):
 		stateChart.send_event("stop")
 		
 	getPivot().basis = Basis.looking_at(direction)
-	move(1)
+	move(1, delta)
 
 func _on_signature_state_physics_processing(delta):
 	var response = $SignatureSkill._process_skill(delta)
@@ -122,7 +126,7 @@ func _on_signature_state_physics_processing(delta):
 		stateChart.send_event("idle")
 
 
-func _on_idle_state_physics_processing(delta):	
+func _on_idle_state_physics_processing(_delta):	
 	if direction != Vector3.ZERO:
 		stateChart.send_event("run")
 		getPivot().basis = Basis.looking_at(direction)

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyi4nl1c2j6tb"]
+
+[ext_resource type="Script" path="res://Scenes/projectiles/Arrow.gd" id="1_gfam7"]
+[ext_resource type="PackedScene" uid="uid://dwwutb04v8jgj" path="res://arts/adv/gltf/arrow.gltf" id="2_t8jjs"]
+
+[node name="Arrow" type="Node3D"]
+script = ExtResource("1_gfam7")
+
+[node name="arrow2" parent="." instance=ExtResource("2_t8jjs")]
+transform = Transform3D(2, 0, 0, 0, -8.74228e-08, -2, 0, 2, -8.74228e-08, 0, 0, 0)

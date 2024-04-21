@@ -20,7 +20,7 @@ func enter_skill(object_to_run):
 	actor.active_animation = { "name": animation_name, "scale": speed_scale, "start":start_animation, "end":end_animation}
 	
 	
-func _process_skill(_delta:float):
+func _process_skill(delta:float):
 	var current_time = Time.get_ticks_msec() - state_time
 	
 	if !Input.is_action_pressed(key):		
@@ -30,7 +30,7 @@ func _process_skill(_delta:float):
 		state_time = Time.get_ticks_msec()		
 		apply_damage()
 		
-	actor.move(0.5)
+	actor.move(0.5, delta)
 	
 func apply_damage():
 	var area : Area3D = actor.get_signature_area()

@@ -1,14 +1,15 @@
-extends State
-class_name PlayerStateDashing
 
+class_name PlayerStateDashing
+signal state_transition
 var animation_name = "Running_A"
 var dashing_time
 
 var dashing_max_time = 500
 var dashing_velocity = 40
+var object
 
 func enter(object_to_run):
-	super.enter(object_to_run)
+	object = object_to_run
 	object.setAnimation(animation_name)
 	dashing_time = Time.get_ticks_msec()
 	
@@ -23,7 +24,4 @@ func update(_delta:float):
 		
 	object.setAnimation(animation_name)
 	object.getPivot().rotation.x = -PI/6
-	
-	
-	
 	

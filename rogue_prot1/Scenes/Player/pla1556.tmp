@@ -24,7 +24,6 @@ collision_mask = 4
 script = ExtResource("1_xaepj")
 
 [node name="Pivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.48587, 0)
 
 [node name="Barbarian" parent="Pivot" instance=ExtResource("2_45fux")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1.4, 0, 1.50996e-07, 0, -1, 0, 0, 0)
@@ -37,7 +36,7 @@ collision_mask = 2
 shape = SubResource("SphereShape3D_5mdfb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.283983, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.20189, 0)
 shape = SubResource("CylinderShape3D_45bhp")
 
 [node name="CharacterSheet" type="Node" parent="."]
@@ -45,7 +44,7 @@ script = ExtResource("9_hg5h2")
 sheet_data = ExtResource("10_ik5cp")
 
 [node name="HealthBar3D" parent="." instance=ExtResource("11_5wrr6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.69419, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.18006, 0)
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("12_wyptb")
