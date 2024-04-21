@@ -10,6 +10,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var active_animation = { "name": "Idle", "scale": 1, "start":null, "end":null}
 @onready var character_sheet = $CharacterSheet
 @onready var healthbar = $HealthBar3D
+var dead : bool = false
 
 
 func _ready():
@@ -47,8 +48,9 @@ func get_pivot() -> Node3D :
 func _physics_process(delta):
 	if  Engine.is_editor_hint():			
 		return
-		
-	setAnimation(active_animation.name, active_animation.scale, active_animation.start, active_animation.end )	
+	
+	if !dead: 	
+		setAnimation(active_animation.name, active_animation.scale, active_animation.start, active_animation.end )	
 		
 	if not is_on_floor():
 		velocity.y -= gravity * delta

@@ -12,18 +12,18 @@ var state_time
 
 var damage_time = (end_animation - start_animation)*1000 / speed_scale
 
-func enter_skill(object_to_run):
-	super.enter_skill(object_to_run)	
+func enter_skill(object_to_run, skill_target = null):
+	super.enter_skill(object_to_run, skill_target)	
 	state_time = Time.get_ticks_msec()
 	actor.moving = false
 	actor.target_velocity = Vector3.ZERO
 	actor.active_animation = { "name": animation_name, "scale": speed_scale, "start":start_animation, "end":end_animation}
 	
 	
-func _process_skill(delta:float):
+func _process_skill(delta:float, channeling : float = false):
 	var current_time = Time.get_ticks_msec() - state_time
 	
-	if !Input.is_action_pressed(key):		
+	if ! channeling:		
 		return 1
 	
 	if current_time > damage_time:		

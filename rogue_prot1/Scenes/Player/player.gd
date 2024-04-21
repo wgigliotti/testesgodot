@@ -12,6 +12,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var stateChart = $StateChart
 @onready var skills_node = $Skill
 
+@export var signature_key : String = "ui_jump"
+
 var target_velocity = Vector3.ZERO
 var last_look = Vector3(1,0,0)
 var moving = true
@@ -116,12 +118,12 @@ func _on_signature_state_entered():
 func _on_running_state_physics_processing(delta):
 	if direction == Vector3.ZERO:		
 		stateChart.send_event("stop")
-		
+	
 	getPivot().basis = Basis.looking_at(direction)
 	move(1, delta)
 
 func _on_signature_state_physics_processing(delta):
-	var response = $SignatureSkill._process_skill(delta)
+	var response = $SignatureSkill._process_skill(delta, Input.is_action_pressed(signature_key))
 	if response:
 		stateChart.send_event("idle")
 

@@ -96,6 +96,8 @@ func _on_attacking_state_exited():
 
 
 func _on_dead_state_entered():
-	mob.get_node("CollisionShape3D").disabled = true
+	#mob.get_node("CollisionShape3D").disabled = true
+	mob.set_collision_layer_value(2, false)	
+	mob.dead = true
 	mob.animationPlayer.play(deaths_animation[randi_range(0,2)])	
 	return

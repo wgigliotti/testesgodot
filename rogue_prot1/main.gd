@@ -25,5 +25,5 @@ func createNewMob():
 	var newMob = mobs[pos].instantiate()
 	newMob.name = str(Time.get_ticks_msec())
 	add_child(newMob)
-	newMob.global_position = Vector3(randf_range(-10, 10),1.15,randf_range(-10, 10))
+	newMob.global_position = Vector3(randf_range(-10, 10),1.5,randf_range(-10, 10))
 	
