@@ -21,10 +21,10 @@ var la = 0
 @onready var character_sheet = $CharacterSheet
 
 func _ready():
-	var max_health = character_sheet.get_value("max_health")
-	character_sheet.set_value("health", max_health)
-	character_sheet.connect_signal_for_property("health", _on_health_change)
-	character_sheet.set_value("name", self.name)
+	var max_health = character_sheet.get_value(constants.CharacterAttributes.HEALTH_CURRENT)
+	character_sheet.set_value(constants.CharacterAttributes.HEALTH_CURRENT, max_health)
+	character_sheet.connect_signal_for_property(constants.CharacterAttributes.HEALTH_CURRENT, _on_health_change)
+	character_sheet.set_value(constants.CharacterAttributes.NAME, self.name)
 	healthbar.update_max(max_health)
 	healthbar.update_healthbar(max_health)
 	
@@ -48,7 +48,7 @@ func checkAttacking(delta):
 	for target in attack_area.get_overlapping_bodies():
 		if target.is_in_group("players"):
 			animationPlayer.play(attack_animation)
-			target.character_sheet.apply_hit(self.character_sheet, $BasicAttack)
+			RulesBook.apply_attack(self.character_sheet, target.character_sheet, $BasicAttack)			
 			return true
 	
 func _physics_process(delta):

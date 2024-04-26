@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" path="res://mobs/Mob.gd" id="1_8t1qp"]
 [ext_resource type="PackedScene" uid="uid://b5b8br4bao86w" path="res://skeleton_rogue.tscn" id="2_mwiu2"]
-[ext_resource type="Script" path="res://Scripts/Characters/character_sheet.gd" id="3_p0lxp"]
+[ext_resource type="Script" path="res://Base/Characters/character_sheet.gd" id="3_p0lxp"]
 [ext_resource type="JSON" path="res://data/mob_sheet.json" id="4_fugpx"]
 [ext_resource type="PackedScene" path="res://health_bar_3d.tscn" id="5_nh0b5"]
-[ext_resource type="Script" path="res://Scripts/Characters/attack.gd" id="6_xgfhn"]
+[ext_resource type="Script" path="res://Base/Scripts/attack.gd" id="6_xgfhn"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rml2n"]
 size = Vector3(1.27112, 1, 1.45691)

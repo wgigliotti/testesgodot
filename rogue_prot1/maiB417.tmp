@@ -1,0 +1,108 @@
+[gd_scene load_steps=14 format=3 uid="uid://dmh63w2vxvip0"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_dtohf"]
+[ext_resource type="PackedScene" uid="uid://d2jgct3hxybpn" path="res://Scenes/Mobs/mob_mage.tscn" id="2_e3su7"]
+[ext_resource type="PackedScene" uid="uid://cfe1nlpcsckit" path="res://Scenes/Mobs/mob_rogue.tscn" id="5_jy6dl"]
+[ext_resource type="PackedScene" uid="uid://bk5rkqoratm41" path="res://Scenes/Player/PlayerMage.tscn" id="6_edh5p"]
+[ext_resource type="PackedScene" uid="uid://cleol4tqqu0b7" path="res://Scenes/Mobs/Mob_Archer.tscn" id="6_pwipe"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sw6fo"]
+size = Vector3(160, 2, 160)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xfg24"]
+size = Vector3(160, 2, 160)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_55k7f"]
+albedo_color = Color(0.329412, 0.14902, 0.0588235, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_p6mj1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_nymsd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_squl0"]
+
+[sub_resource type="GDScript" id="GDScript_wwf2l"]
+script/source = "@icon(\"res://arts/icons/STATE.png\")
+extends Node
+class_name State
+
+
+signal state_transition
+var object 
+
+func enter(object_to_run):
+	object = object_to_run
+	
+func exit():
+	pass
+	
+func update(_delta:float):
+	pass
+"
+
+[sub_resource type="Environment" id="Environment_jjgg1"]
+background_mode = 1
+background_color = Color(0, 0, 0, 0.317647)
+background_energy_multiplier = 6.41
+tonemap_exposure = 1.1
+tonemap_white = 3.59
+glow_enabled = true
+fog_light_color = Color(0.517647, 0.552941, 0.607843, 1)
+fog_light_energy = 0.0
+
+[node name="Main" type="Node"]
+script = ExtResource("1_dtohf")
+mob = ExtResource("2_e3su7")
+mob2 = ExtResource("5_jy6dl")
+mob3 = ExtResource("6_pwipe")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_sw6fo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_xfg24")
+surface_material_override/0 = SubResource("StandardMaterial3D_55k7f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.983066, -0.170199, -0.0679269, -0.00539791, -0.343617, 0.939095, -0.183174, 0.923558, 0.33688, -8, 12, -19)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.289061, 0, -4.16602)
+mesh = SubResource("CylinderMesh_p6mj1")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.4898, 0, 31.5643)
+collision_layer = 4
+collision_mask = 4
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("BoxMesh_nymsd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_squl0")
+
+[node name="State" type="Node" parent="."]
+script = SubResource("GDScript_wwf2l")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MobArcher" parent="." instance=ExtResource("6_pwipe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -10.155)
+
+[node name="PlayerMage" parent="." instance=ExtResource("6_edh5p")]
+
+[node name="CameraPivot" type="Marker3D" parent="PlayerMage"]
+transform = Transform3D(1, 0, 0, 0, 0.573577, 0.819153, 0, -0.819153, 0.573577, 0, 100, 70)
+
+[node name="Camera3D" type="Camera3D" parent="PlayerMage/CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 0)
+environment = SubResource("Environment_jjgg1")
+current = true
+fov = 18.5
+size = 28.927

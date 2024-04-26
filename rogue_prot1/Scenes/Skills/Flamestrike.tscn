@@ -1,0 +1,128 @@
+[gd_scene load_steps=15 format=3 uid="uid://cvalsjwighg6q"]
+
+[ext_resource type="Script" path="res://Scenes/Skills/Flamestrike.gd" id="1_i3tyr"]
+[ext_resource type="Shader" uid="uid://5dnyy8ya3hwx" path="res://Scenes/Skills/Flamestrike.tres" id="1_r6mre"]
+[ext_resource type="Texture2D" uid="uid://b03dr4n4gy12x" path="res://arts/fire/Voronoi01.png" id="2_komm6"]
+[ext_resource type="Texture2D" uid="uid://cviif1g5cam21" path="res://arts/fire/Flame02.png" id="3_4qgia"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p507f"]
+render_priority = 0
+shader = ExtResource("1_r6mre")
+shader_parameter/DissolveSpeed = Vector2(2, 1)
+shader_parameter/DissolvAmmount = 0.236
+shader_parameter/MainTex = ExtResource("3_4qgia")
+shader_parameter/DissolveTex = ExtResource("2_komm6")
+
+[sub_resource type="Curve" id="Curve_m6tw4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.175978, 1), 0.0, 0.0, 0, 0, Vector2(0.696035, 0.505494), 0.0, 0.0, 0, 0, Vector2(1, 0.175824), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_1443f"]
+curve = SubResource("Curve_m6tw4")
+
+[sub_resource type="Curve" id="Curve_1262k"]
+max_value = 3.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_e1juh"]
+curve = SubResource("Curve_1262k")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uymp5"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.0
+emission_ring_radius = 0.0
+emission_ring_inner_radius = 1.0
+angle_max = 360.0
+gravity = Vector3(0, 5, 0)
+linear_accel_max = 3.0
+damping_max = 1.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_1443f")
+scale_over_velocity_curve = SubResource("CurveTexture_e1juh")
+color = Color(4, 1.10196, 0.501961, 0.152941)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ap065"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_scjj7"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.0
+emission_ring_radius = 0.0
+emission_ring_inner_radius = 2.0
+angle_max = 360.0
+gravity = Vector3(0, 5, 0)
+linear_accel_max = 3.0
+damping_max = 1.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_1443f")
+color = Color(0.325441, 0.325441, 0.325441, 0.584314)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jmitn"]
+radius = 2.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tmvc8"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.0
+emission_ring_radius = 0.0
+emission_ring_inner_radius = 2.0
+angle_max = 360.0
+gravity = Vector3(0, 5, 0)
+linear_accel_max = 3.0
+damping_max = 1.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_1443f")
+scale_over_velocity_curve = SubResource("CurveTexture_e1juh")
+color = Color(4, 1.10196, 0.501961, 0.152941)
+
+[node name="Flamestrike" type="Node3D"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+script = ExtResource("1_i3tyr")
+
+[node name="Fire" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_p507f")
+emitting = false
+amount = 20
+lifetime = 1.3
+one_shot = true
+speed_scale = 2.0
+explosiveness = 0.5
+fixed_fps = 90
+process_material = SubResource("ParticleProcessMaterial_uymp5")
+draw_pass_1 = SubResource("QuadMesh_ap065")
+
+[node name="Smoke" type="GPUParticles3D" parent="."]
+sorting_offset = -1.0
+material_override = SubResource("ShaderMaterial_p507f")
+emitting = false
+amount = 30
+one_shot = true
+speed_scale = 2.0
+explosiveness = 0.5
+fixed_fps = 90
+process_material = SubResource("ParticleProcessMaterial_scjj7")
+draw_pass_1 = SubResource("QuadMesh_ap065")
+
+[node name="Area" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="Shape" type="CollisionShape3D" parent="Area"]
+shape = SubResource("SphereShape3D_jmitn")
+
+[node name="Fire2" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_p507f")
+emitting = false
+amount = 40
+lifetime = 0.4
+one_shot = true
+speed_scale = 2.0
+explosiveness = 0.5
+fixed_fps = 90
+process_material = SubResource("ParticleProcessMaterial_tmvc8")
+draw_pass_1 = SubResource("QuadMesh_ap065")
+
+[connection signal="body_entered" from="Area" to="." method="_on_area_body_entered"]

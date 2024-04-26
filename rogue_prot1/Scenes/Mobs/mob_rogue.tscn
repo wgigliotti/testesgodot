@@ -1,13 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://cfe1nlpcsckit"]
+[gd_scene load_steps=12 format=3 uid="uid://cfe1nlpcsckit"]
 
-[ext_resource type="Script" path="res://Scenes/Mobs/mob_base.gd" id="1_2unn0"]
-[ext_resource type="PackedScene" uid="uid://j0wwf4vv06py" path="res://Scenes/Mobs/mob_engine.tscn" id="2_hbbhh"]
+[ext_resource type="Script" path="res://Base/Characters/mob_base.gd" id="1_pgb3b"]
+[ext_resource type="PackedScene" uid="uid://j0wwf4vv06py" path="res://Base/Characters/mob_engine.tscn" id="3_whhm2"]
 [ext_resource type="PackedScene" uid="uid://b5b8br4bao86w" path="res://skeleton_rogue.tscn" id="3_xoedl"]
 [ext_resource type="Script" path="res://Scripts/Characters/behaviors/MobStab.gd" id="4_8aqhn"]
 [ext_resource type="PackedScene" path="res://health_bar_3d.tscn" id="4_sx5nv"]
-[ext_resource type="Script" path="res://Scripts/Characters/attack.gd" id="5_4cc5y"]
-[ext_resource type="Script" path="res://Scripts/Characters/character_sheet.gd" id="5_yod26"]
+[ext_resource type="Script" path="res://Skills/stab_skill.gd" id="5_kif38"]
+[ext_resource type="Script" path="res://Base/Scripts/attack.gd" id="6_5dgvi"]
 [ext_resource type="JSON" path="res://data/mob_sheet.json" id="6_cuv6b"]
+[ext_resource type="Script" path="res://Base/Characters/character_sheet.gd" id="8_hinwo"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_42h5g"]
 height = 2.19767
@@ -18,39 +19,44 @@ radius = 14.084
 [node name="MobRogue" type="CharacterBody3D" groups=["mobs"]]
 collision_layer = 2
 collision_mask = 6
-script = ExtResource("1_2unn0")
+script = ExtResource("1_pgb3b")
 
 [node name="Pivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.11214, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0503633, 0)
 
 [node name="Model" parent="Pivot" instance=ExtResource("3_xoedl")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="MobEngine" parent="." instance=ExtResource("2_hbbhh")]
+[node name="MobEngine" parent="." instance=ExtResource("3_whhm2")]
 
-[node name="StabBehavior" type="Node" parent="MobEngine" node_paths=PackedStringArray("attack")]
+[node name="StabBehavior" type="Node" parent="MobEngine" node_paths=PackedStringArray("attack", "skill")]
 script = ExtResource("4_8aqhn")
+attack = NodePath("SkillStab/CharacterAttack")
+skill = NodePath("SkillStab")
+
+[node name="SkillStab" type="Node" parent="MobEngine/StabBehavior" node_paths=PackedStringArray("attack")]
+script = ExtResource("5_kif38")
 attack = NodePath("CharacterAttack")
 
-[node name="CharacterAttack" type="Node" parent="MobEngine/StabBehavior"]
-script = ExtResource("5_4cc5y")
+[node name="CharacterAttack" type="Node" parent="MobEngine/StabBehavior/SkillStab"]
+script = ExtResource("6_5dgvi")
 damage = 5.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0113593, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17386, 0)
 shape = SubResource("CylinderShape3D_42h5g")
 
 [node name="Vision" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.11214, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0503633, 0)
 collision_layer = 0
 collision_mask = 9
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Vision"]
+[node name="Shape" type="CollisionShape3D" parent="Vision"]
 shape = SubResource("SphereShape3D_3b7ki")
 
 [node name="HealthBar3D" parent="." instance=ExtResource("4_sx5nv")]
-transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 1, 0, 2.19046, 0)
+transform = Transform3D(1, 0, 0, 0, 0.3, 0, 0, 0, 1, 0, 3.35296, 0)
 
 [node name="CharacterSheet" type="Node" parent="."]
-script = ExtResource("5_yod26")
+script = ExtResource("8_hinwo")
 sheet_data = ExtResource("6_cuv6b")

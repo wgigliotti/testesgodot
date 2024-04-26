@@ -1,14 +1,12 @@
 extends Behavior
 class_name ShootBehavior
 
+@export var skill : Skill
+@export var projectile : PackedScene
+
 var target_range = 25*25
 var _target
-@export var attack : CharacterAttack
-@export var projectile : PackedScene
-var attack_animation = "1H_Ranged_Shoot"
-var stab_time : int = 1000
-var rate = 2
-var limit_time : int
+
 
 func check_execution(target : Node3D, _delta):
 	if object.mob.global_position.distance_squared_to(target.global_position) < target_range:
@@ -16,27 +14,15 @@ func check_execution(target : Node3D, _delta):
 	return false
 	
 func start_execution(target : Node3D):
+	skill.enter_skill(object.mob, target)
 	_target = target
-	object.mob.velocity = Vector3.ZERO
-	object.mob.active_animation = { "name": attack_animation, "scale": rate, "start":null, "end":null}	
-	limit_time = Time.get_ticks_msec() + (stab_time/rate)
-	var ball = projectile.instantiate()
-	var dir : Vector3 = target.global_position - object.mob.global_position
-	var dist = dir.length()
-	dir = dir.normalized()
+	object.mob.velocity = Vector3.ZERO	
 	
-	dir.y += 0.05
+func run_execution(delta):
+	var response = skill._process_skill(delta, false)
+	if response:
+		return false
+	return true
 	
-	ball.velocity = dir.normalized()
-	ball.position = object.mob.global_position
-	ball.target = target
-	get_tree().get_root().add_child(ball)
-	
-func run_execution(_delta):
-	if Time.get_ticks_msec() < limit_time:
-		return true
-	return false
-	
-func finish_execution():
-	_target.character_sheet.apply_hit(object.mob.character_sheet, attack)
+func finish_execution():	
 	_target = null

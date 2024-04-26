@@ -1,6 +1,20 @@
 {
-	"max_health" : 200,
-	"damage": 5,
-	"armor": 0,
-	"magic_resist": 0.3
+	"HEALTH_CURRENT" : 200,
+	"HEALTH_MAX" : 200,
+	"HEALTH_REGEN": 10,
+	
+	"MANA_CURRENT": 0,
+	"MANA_MAX": 0,
+	"MANA_REGEN": 0,
+	
+	"SPEED": 20,
+	
+	"MAGIC_DAMAGE_CHANGE" : 1,
+	"MAGIC_RESISTANCE": 0.25,
+	
+	"PHYSICAL_DAMANGE_CHANGE": 1,
+	"PHYSICAL_RESISTANCE": 0.25,
+	
+	"CRITICAL_DAMAGE_CHANCE_CHANGE" : 1,
+	"CRITICAL_DAMAGE_CHANGE": 1
 }

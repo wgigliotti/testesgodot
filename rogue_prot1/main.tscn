@@ -1,10 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://dmh63w2vxvip0"]
+[gd_scene load_steps=21 format=3 uid="uid://dmh63w2vxvip0"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_dtohf"]
-[ext_resource type="PackedScene" uid="uid://c0d5gyh5ojqq3" path="res://Scenes/Player/player.tscn" id="1_k54o2"]
 [ext_resource type="PackedScene" uid="uid://d2jgct3hxybpn" path="res://Scenes/Mobs/mob_mage.tscn" id="2_e3su7"]
-[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_0yd4n"]
+[ext_resource type="PackedScene" uid="uid://dsr3qkcxcu6g6" path="res://Scenes/Player/PlayerBarbarian.tscn" id="5_ijhw1"]
 [ext_resource type="PackedScene" uid="uid://cfe1nlpcsckit" path="res://Scenes/Mobs/mob_rogue.tscn" id="5_jy6dl"]
+[ext_resource type="PackedScene" uid="uid://bfp3k6hsebnf2" path="res://Scenes/AttackSpeedBuff.tscn" id="6_bnmjj"]
 [ext_resource type="PackedScene" uid="uid://cleol4tqqu0b7" path="res://Scenes/Mobs/Mob_Archer.tscn" id="6_pwipe"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sw6fo"]
@@ -15,6 +15,24 @@ size = Vector3(160, 2, 160)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_55k7f"]
 albedo_color = Color(0.329412, 0.14902, 0.0588235, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_l0ggu"]
+size = Vector3(50, 50, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oyyq0"]
+size = Vector3(50, 20, 5)
+
+[sub_resource type="PrismMesh" id="PrismMesh_ifk1q"]
+size = Vector3(20, 10, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jqqvu"]
+albedo_color = Color(0.101961, 0, 0.337255, 0.0627451)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dv444"]
+albedo_color = Color(0.509804, 0.360784, 0.345098, 0.823529)
+
+[sub_resource type="QuadMesh" id="QuadMesh_byrlg"]
+size = Vector2(10, 100)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_p6mj1"]
 
@@ -41,6 +59,18 @@ func update(_delta:float):
 	pass
 "
 
+[sub_resource type="Environment" id="Environment_jjgg1"]
+background_mode = 1
+background_color = Color(0, 0, 0, 0.317647)
+background_energy_multiplier = 6.41
+ambient_light_color = Color(0.866667, 0.858824, 0.858824, 1)
+ambient_light_energy = 8.6
+tonemap_exposure = 1.1
+tonemap_white = 3.59
+glow_enabled = true
+fog_light_color = Color(0.517647, 0.552941, 0.607843, 1)
+fog_light_energy = 0.0
+
 [node name="Main" type="Node"]
 script = ExtResource("1_dtohf")
 mob = ExtResource("2_e3su7")
@@ -59,21 +89,43 @@ shape = SubResource("BoxShape3D_sw6fo")
 mesh = SubResource("BoxMesh_xfg24")
 surface_material_override/0 = SubResource("StandardMaterial3D_55k7f")
 
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -55.029, 11, -45.6459)
+collision_layer = 4
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground/StaticBody3D"]
+mesh = SubResource("BoxMesh_l0ggu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_oyyq0")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="Ground"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 54.9874, 11, -45.6459)
+collision_layer = 4
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground/StaticBody3D2"]
+mesh = SubResource("BoxMesh_l0ggu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D2"]
+shape = SubResource("BoxShape3D_oyyq0")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.38218, -43.6415)
+mesh = SubResource("PrismMesh_ifk1q")
+surface_material_override/0 = SubResource("StandardMaterial3D_jqqvu")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.01, 0)
+sorting_offset = 1.0
+material_override = SubResource("StandardMaterial3D_dv444")
+mesh = SubResource("QuadMesh_byrlg")
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.983066, -0.170199, -0.0679269, -0.00539791, -0.343617, 0.939095, -0.183174, 0.923558, 0.33688, -8, 12, -19)
+transform = Transform3D(-0.614943, 0.784327, 0.0817051, -0.587579, -0.524841, 0.615867, 0.525923, 0.330715, 0.783602, -8, 12, 34.6589)
+light_indirect_energy = 5.0
 shadow_enabled = true
-
-[node name="Player" parent="." groups=["player"] instance=ExtResource("1_k54o2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.34, 1.5, 5.839)
-
-[node name="CameraPivot" type="Marker3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 0.642788, 0.766045, 0, -0.766045, 0.642788, 0, 13, 10.259)
-
-[node name="Camera3D" type="Camera3D" parent="Player/CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 1.78333, -3.82438)
-current = true
-fov = 77.9
-size = 28.927
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.289061, 0, -4.16602)
@@ -95,12 +147,79 @@ script = SubResource("GDScript_wwf2l")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="StateChartDebugger" parent="." instance=ExtResource("5_0yd4n")]
-offset_left = 916.0
-offset_top = 5.0
-offset_right = -4.0
-offset_bottom = -296.0
-initial_node_to_watch = NodePath("../Player")
+[node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="MobArcher" parent="." instance=ExtResource("6_pwipe")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -10.155)
+[node name="asLabel" type="Label" parent="HUD"]
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 42.0
+offset_bottom = 27.0
+text = "AS :"
+
+[node name="hpLabel" type="Label" parent="HUD"]
+offset_left = 2.0
+offset_top = 35.0
+offset_right = 42.0
+offset_bottom = 58.0
+text = "AS :"
+
+[node name="msLabel" type="Label" parent="HUD"]
+offset_left = 1.0
+offset_top = 64.0
+offset_right = 41.0
+offset_bottom = 87.0
+
+[node name="ColorRect" type="ColorRect" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -166.0
+offset_bottom = 374.0
+grow_horizontal = 0
+color = Color(0.168627, 0.172549, 0.52549, 0.129412)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/ColorRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -68.0
+offset_top = 11.0
+offset_right = 70.0
+offset_bottom = 180.0
+grow_horizontal = 2
+
+[node name="AttackSpeedBuff" parent="." instance=ExtResource("6_bnmjj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1, 0)
+
+[node name="AttackSpeedBuff2" parent="." instance=ExtResource("6_bnmjj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.3698, 1, 0)
+
+[node name="Character" parent="." instance=ExtResource("5_ijhw1")]
+
+[node name="CameraPivot" type="Marker3D" parent="Character"]
+transform = Transform3D(1, 0, 0, 0, 0.573577, 0.819153, 0, -0.819153, 0.573577, 0, 60, 35)
+
+[node name="Camera3D" type="Camera3D" parent="Character/CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 0)
+environment = SubResource("Environment_jjgg1")
+current = true
+fov = 28.1
+size = 28.927
+near = 10.0
+far = 236.17
+
+[node name="AttackSpeedBuff3" parent="." instance=ExtResource("6_bnmjj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1, -5.08432)
+
+[node name="AttackSpeedBuff4" parent="." instance=ExtResource("6_bnmjj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8917, 1, -5.08432)
+
+[node name="AttackSpeedBuff5" parent="." instance=ExtResource("6_bnmjj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.64511, 1, -5.08432)
+
+[node name="AttackSpeedBuff6" parent="." instance=ExtResource("6_bnmjj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.3613, 1, -5.08432)
+
+[node name="AttackSpeedBuff7" parent="." instance=ExtResource("6_bnmjj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8718, 1, -5.08432)

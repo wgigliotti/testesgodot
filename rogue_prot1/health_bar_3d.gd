@@ -1,4 +1,5 @@
 extends Sprite3D
+class_name HealthBar3D
 
 @export var show_value : bool = false
 @onready var viewport = $Viewport

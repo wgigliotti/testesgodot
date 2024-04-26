@@ -1,0 +1,107 @@
+[gd_scene load_steps=14 format=3 uid="uid://c0d5gyh5ojqq3"]
+
+[ext_resource type="Script" path="res://Scenes/Player_old/player.gd" id="1_xaepj"]
+[ext_resource type="PackedScene" uid="uid://ddbhwoh51a4n0" path="res://Scenes/Player_old/barbarian.tscn" id="2_45fux"]
+[ext_resource type="Script" path="res://Base/Characters/character_sheet.gd" id="3_cvpfp"]
+[ext_resource type="Script" path="res://Skills/skill_spin.gd" id="10_gj3u3"]
+[ext_resource type="JSON" path="res://data/barbarian_sheet.json" id="10_ik5cp"]
+[ext_resource type="PackedScene" path="res://health_bar_3d.tscn" id="11_5wrr6"]
+[ext_resource type="Script" path="res://Base/Scripts/attack.gd" id="11_dhtjs"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="12_wyptb"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="13_ly4yk"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="14_dwjvq"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="15_wnpul"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5mdfb"]
+radius = 2.31661
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_45bhp"]
+height = 2.31392
+radius = 0.601632
+
+[node name="Player" type="CharacterBody3D" groups=["players"]]
+collision_mask = 4
+script = ExtResource("1_xaepj")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.48587, 0)
+
+[node name="Barbarian" parent="Pivot" instance=ExtResource("2_45fux")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1.4, 0, 1.50996e-07, 0, -1, 0, 0, 0)
+
+[node name="SignatureArea" type="Area3D" parent="Pivot"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivot/SignatureArea"]
+shape = SubResource("SphereShape3D_5mdfb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.283983, 0)
+shape = SubResource("CylinderShape3D_45bhp")
+
+[node name="CharacterSheet" type="Node" parent="."]
+script = ExtResource("3_cvpfp")
+sheet_data = ExtResource("10_ik5cp")
+
+[node name="HealthBar3D" parent="." instance=ExtResource("11_5wrr6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.69419, 0)
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("12_wyptb")
+
+[node name="CompoundState" type="Node" parent="StateChart"]
+script = ExtResource("13_ly4yk")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("14_dwjvq")
+
+[node name="Run" type="Node" parent="StateChart/CompoundState/Idle"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Running")
+event = &"run"
+
+[node name="Signature" type="Node" parent="StateChart/CompoundState/Idle"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Signature")
+event = &"signature"
+
+[node name="Running" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("14_dwjvq")
+
+[node name="Stop" type="Node" parent="StateChart/CompoundState/Running"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Idle")
+event = &"stop"
+
+[node name="Signature" type="Node" parent="StateChart/CompoundState/Running"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Signature")
+event = &"signature"
+
+[node name="Signature" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("14_dwjvq")
+
+[node name="idle" type="Node" parent="StateChart/CompoundState/Signature"]
+script = ExtResource("15_wnpul")
+to = NodePath("../../Idle")
+event = &"idle"
+
+[node name="SignatureSkill" type="Node" parent="." node_paths=PackedStringArray("attack")]
+script = ExtResource("10_gj3u3")
+attack = NodePath("CharacterAttack")
+
+[node name="CharacterAttack" type="Node" parent="SignatureSkill"]
+script = ExtResource("11_dhtjs")
+damage = 30.0
+
+[node name="Skill" type="Node3D" parent="."]
+
+[connection signal="state_entered" from="StateChart/CompoundState/Idle" to="." method="_on_idle_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Idle" to="." method="_on_idle_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Running" to="." method="_on_running_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Running" to="." method="_on_running_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Signature" to="." method="_on_signature_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/Signature" to="." method="_on_signature_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Signature" to="." method="_on_signature_state_physics_processing"]

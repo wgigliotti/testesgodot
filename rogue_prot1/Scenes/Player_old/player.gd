@@ -16,8 +16,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var target_velocity = Vector3.ZERO
 var last_look = Vector3(1,0,0)
-var moving = true
 
+func get_character_sheet():
+	return character_sheet
 
 func get_signature_area():
 	return signature_area
@@ -110,7 +111,6 @@ func _on_idle_state_entered():
 
 func _on_running_state_entered():
 	active_animation = { "name": "Running_A", "scale": 1, "start":null, "end":null}
-	moving = true
 
 func _on_signature_state_entered():	
 	$SignatureSkill.enter_skill(self)

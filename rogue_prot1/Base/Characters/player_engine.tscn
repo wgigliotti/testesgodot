@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=3 uid="uid://cwttda7m4pdf"]
+
+[ext_resource type="Script" path="res://Base/Characters/player_engine.gd" id="1_j2v6i"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_yp7x3"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_5vtbf"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_upsco"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_ln0o2"]
+[ext_resource type="Script" path="res://Base/Characters/player_commands.gd" id="6_ceu3f"]
+
+[node name="PlayerEngine" type="Node"]
+script = ExtResource("1_j2v6i")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("2_yp7x3")
+
+[node name="CompoundState" type="Node" parent="StateChart"]
+script = ExtResource("3_5vtbf")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("4_upsco")
+
+[node name="Run" type="Node" parent="StateChart/CompoundState/Idle"]
+script = ExtResource("5_ln0o2")
+to = NodePath("../../Running")
+event = &"run"
+
+[node name="act" type="Node" parent="StateChart/CompoundState/Idle"]
+script = ExtResource("5_ln0o2")
+to = NodePath("../../Acting")
+event = &"act"
+
+[node name="die" type="Node" parent="StateChart/CompoundState/Idle"]
+script = ExtResource("5_ln0o2")
+to = NodePath("../../Dead")
+event = &"die"
+
+[node name="Running" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("4_upsco")
+
+[node name="Stop" type="Node" parent="StateChart/CompoundState/Running"]
+script = ExtResource("5_ln0o2")
+to = NodePath("../../Idle")
+event = &"stop"
+
+[node name="act" type="Node" parent="StateChart/CompoundState/Running"]
+script = ExtResource("5_ln0o2")
+to = NodePath("../../Acting")
+event = &"act"
+
+[node name="die" type="Node" parent="StateChart/CompoundState/Running"]
+script = ExtResource("5_ln0o2")
+to = NodePath("../../Dead")
+event = &"die"
+
+[node name="Acting" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("4_upsco")
+
+[node name="idle" type="Node" parent="StateChart/CompoundState/Acting"]
+script = ExtResource("5_ln0o2")
+to = NodePath("../../Idle")
+event = &"idle"
+
+[node name="die" type="Node" parent="StateChart/CompoundState/Acting"]
+script = ExtResource("5_ln0o2")
+to = NodePath("../../Dead")
+event = &"die"
+
+[node name="Dead" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("4_upsco")
+
+[node name="CommandsEnum" type="Node" parent="."]
+script = ExtResource("6_ceu3f")
+
+[connection signal="state_entered" from="StateChart/CompoundState/Idle" to="." method="_on_idle_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Idle" to="." method="_on_idle_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Running" to="." method="_on_running_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Running" to="." method="_on_running_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/Acting" to="." method="_on_acting_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/Acting" to="." method="_on_acting_state_physics_processing"]

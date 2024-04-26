@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bfp3k6hsebnf2"]
+
+[ext_resource type="Script" path="res://Scenes/AttackSpeedBuff.gd" id="1_lp8sm"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_822bl"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_yoc5o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n5kr6"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.2)
+roughness = 0.39
+
+[node name="AttackSpeedBuff" type="Area3D" groups=["buffs"]]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_lp8sm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_822bl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_yoc5o")
+surface_material_override/0 = SubResource("StandardMaterial3D_n5kr6")

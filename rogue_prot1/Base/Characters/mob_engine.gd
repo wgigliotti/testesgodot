@@ -5,7 +5,7 @@ class_name MobEngine
 @onready var mob : MobBase = get_parent()
 var target
 @export var forget_distance : int = 15 * 15
-var SPEED = 10
+
 var active_behavior : Behavior = null
 
 @onready var state_chart : StateChart = get_node("StateChart")
@@ -14,12 +14,15 @@ var deaths_animation = ["Death_A", "Death_B", "Death_C_Skeletons"]
 @onready var character_sheet = mob.get_node("CharacterSheet")
 
 func _ready():
+	if  Engine.is_editor_hint():			
+		return
+		
 	for behavior in get_children():
 		if behavior is Behavior:
 			behavior.on_attach(self)
 	
-	character_sheet.connect_signal_for_property("health", _on_health_change)
-	character_sheet.set_value("name", self.name)
+	character_sheet.connect_signal_for_property(constants.CharacterAttributes.HEALTH_CURRENT, _on_health_change)
+	character_sheet.set_value(constants.CharacterAttributes.NAME, self.name)
 
 	
 func _on_health_change(_from, to):
@@ -74,7 +77,7 @@ func _on_chasing_state_physics_processing(delta):
 	else:
 		dir = dir.normalized()
 		mob.get_pivot().basis = Basis.looking_at(dir)
-		mob.velocity = dir * SPEED
+		mob.velocity = dir * mob._SPEED
 	
 	for behavior in get_children():
 		if behavior is Behavior and behavior.check_execution(target, delta):
@@ -96,8 +99,14 @@ func _on_attacking_state_exited():
 
 
 func _on_dead_state_entered():
-	#mob.get_node("CollisionShape3D").disabled = true
-	mob.set_collision_layer_value(2, false)	
+	mob.get_node("CollisionShape3D").disabled = true
+	$DeathTimer.start()
 	mob.dead = true
-	mob.animationPlayer.play(deaths_animation[randi_range(0,2)])	
+	mob.animationPlayer.play(deaths_animation[randi_range(0,2)])
+	mob.velocity = Vector3.ZERO
 	return
+
+
+func _on_death_timer_timeout():
+	print("free")
+	mob.queue_free()

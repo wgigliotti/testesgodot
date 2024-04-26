@@ -1,0 +1,71 @@
+[gd_scene load_steps=14 format=3 uid="uid://bk5rkqoratm41"]
+
+[ext_resource type="Script" path="res://Base/Characters/player_base.gd" id="1_2s54t"]
+[ext_resource type="PackedScene" uid="uid://bw14qsssp5gy1" path="res://Scenes/Player_old/mage.tscn" id="2_b27ah"]
+[ext_resource type="Script" path="res://Base/Characters/character_sheet.gd" id="3_h7ixd"]
+[ext_resource type="JSON" path="res://data/barbarian_sheet.json" id="4_q33f0"]
+[ext_resource type="PackedScene" uid="uid://cwttda7m4pdf" path="res://Base/Characters/player_engine.tscn" id="5_tol11"]
+[ext_resource type="Script" path="res://Base/Characters/player_commands.gd" id="6_q0sr6"]
+[ext_resource type="PackedScene" path="res://health_bar_3d.tscn" id="7_h04em"]
+[ext_resource type="Script" path="res://Skills/skill_flamestrike.gd" id="8_o3fjn"]
+[ext_resource type="PackedScene" uid="uid://cvalsjwighg6q" path="res://Scenes/Skills/Flamestrike.tscn" id="9_uvnnb"]
+[ext_resource type="Script" path="res://Base/Scripts/attack.gd" id="10_4ldg8"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_06kxk"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fbdr7"]
+radius = 30.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_b6o6v"]
+radius = 5.0
+
+[node name="PlayerMage" type="CharacterBody3D"]
+collision_mask = 4
+script = ExtResource("1_2s54t")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Model" parent="Pivot" instance=ExtResource("2_b27ah")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01885, 0)
+shape = SubResource("CylinderShape3D_06kxk")
+
+[node name="Vision" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape3D" parent="Vision"]
+shape = SubResource("SphereShape3D_fbdr7")
+
+[node name="Pickup" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pickup"]
+shape = SubResource("SphereShape3D_b6o6v")
+
+[node name="CharacterSheet" type="Node" parent="."]
+script = ExtResource("3_h7ixd")
+sheet_data = ExtResource("4_q33f0")
+
+[node name="PlayerEngine" parent="." instance=ExtResource("5_tol11")]
+
+[node name="PlayerCommands" type="Node" parent="PlayerEngine"]
+script = ExtResource("6_q0sr6")
+
+[node name="HealthBar3D" parent="." instance=ExtResource("7_h04em")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.69419, 0)
+show_value = true
+
+[node name="SignatureSkill" type="Node" parent="." node_paths=PackedStringArray("attack")]
+script = ExtResource("8_o3fjn")
+attack = NodePath("CharacterAttack")
+flamestrikeScene = ExtResource("9_uvnnb")
+
+[node name="CharacterAttack" type="Node" parent="SignatureSkill"]
+script = ExtResource("10_4ldg8")
+damage = 200.0
+
+[connection signal="area_entered" from="Pickup" to="." method="_on_pickup_area_entered"]
