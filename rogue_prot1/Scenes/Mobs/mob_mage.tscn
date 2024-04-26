@@ -37,7 +37,8 @@ projectile = ExtResource("5_6yd6m")
 
 [node name="CharacterAttack" type="Node" parent="MobEngine/CastBehavior"]
 script = ExtResource("6_fwjrw")
-damage = 5.0
+magic_damage = 7.0
+critical_chance = 0.05
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14876, 0)

@@ -40,7 +40,9 @@ attack = NodePath("CharacterAttack")
 
 [node name="CharacterAttack" type="Node" parent="MobEngine/StabBehavior/SkillStab"]
 script = ExtResource("6_5dgvi")
-damage = 5.0
+physical_damage = 5.0
+critical_chance = 0.2
+critical_damage = 2.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17386, 0)

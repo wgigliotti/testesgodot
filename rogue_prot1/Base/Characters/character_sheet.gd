@@ -11,6 +11,8 @@ var base_sheet : Dictionary
 
 var signals : Dictionary = {}
 var buffs : Array = []
+var on_hit_buffs : Array = []
+var on_hitted_buffs : Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -54,19 +56,31 @@ func _apply_buff(buff : CharacterBuff, increment : bool):
 		var old_value = get_value(attribute)
 		var new_value = increment_func.call(old_value, buff.attributes[attribute], increment)
 		set_value(attribute, new_value)
+		
+func _remove_from(buff: CharacterBuff, array : Array):
+	for index in array.size():
+		if array[index] == buff:
+			array.remove_at(index)
+			break
 	
 func append_buff(buff : CharacterBuff):	
 	buffs.append(buff)
+	if buff.on_hit:
+		on_hit_buffs.append(buff)
+		
+	if buff.on_hitted:
+		on_hitted_buffs.append(buff)
+	
+		
 	buff.attach(self)
 	_apply_buff(buff, true)
 	_on_append_buff.emit(buff)
-
-func remove_buff(buff : CharacterBuff):		
-	for index in buffs.size():
-		if buffs[index] == buff:
-			buffs.remove_at(index)
-			break
+	
+func remove_buff(buff : CharacterBuff):			
+	_remove_from(buff, buffs)
+	_remove_from(buff, on_hit_buffs)	
+	_remove_from(buff, on_hitted_buffs)
 	_apply_buff(buff, false)
 	_on_release_buff.emit(buff)	
-		
+	
 	

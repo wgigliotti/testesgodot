@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://c48xgoxd6xg1c"]
+
+[ext_resource type="Script" path="res://Scenes/Buffs/ThronBuff.gd" id="1_p1ugs"]
+[ext_resource type="Script" path="res://Base/Scripts/attack.gd" id="2_gb6ss"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ckkv"]
+transparency = 1
+albedo_color = Color(0.270588, 0.282353, 0.129412, 0.717647)
+
+[sub_resource type="SphereMesh" id="SphereMesh_cbacd"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fxbp2"]
+
+[node name="ThornBuff" type="Area3D" groups=["buffs"]]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_p1ugs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_3ckkv")
+mesh = SubResource("SphereMesh_cbacd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_fxbp2")
+
+[node name="CharacterAttack" type="Node" parent="."]
+script = ExtResource("2_gb6ss")
+magic_damage = 5.0
+physical_damage = 5.0
+critical_chance = 0.05

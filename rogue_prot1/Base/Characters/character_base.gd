@@ -34,10 +34,10 @@ func init_attributes():
 	
 	update_vision(character_sheet.get_value(constants.CharacterAttributes.DISTANCE_VISION))
 	
-	character_sheet.connect_signal_for_property(constants.CharacterAttributes.HEALTH_CURRENT, func(from, to) : healthbar.update_healthbar(to))
-	character_sheet.connect_signal_for_property(constants.CharacterAttributes.HEALTH_MAX, func(from, to) : healthbar.update_max(to))
-	character_sheet.connect_signal_for_property(constants.CharacterAttributes.SPEED, func(from, to) : _SPEED = to)
-	character_sheet.connect_signal_for_property(constants.CharacterAttributes.DISTANCE_VISION, func(from, to) : update_vision(to))
+	character_sheet.connect_signal_for_property(constants.CharacterAttributes.HEALTH_CURRENT, func(_from, to) : healthbar.update_healthbar(to))
+	character_sheet.connect_signal_for_property(constants.CharacterAttributes.HEALTH_MAX, func(_from, to) : healthbar.update_max(to))
+	character_sheet.connect_signal_for_property(constants.CharacterAttributes.SPEED, func(_from, to) : _SPEED = to)
+	character_sheet.connect_signal_for_property(constants.CharacterAttributes.DISTANCE_VISION, func(_from, to) : update_vision(to))
 	
 	
 func update_vision(value):

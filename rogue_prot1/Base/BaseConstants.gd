@@ -26,13 +26,16 @@ enum CharacterAttributes {
 	PHYSICAL_DAMANGE_CHANGE,
 	PHYSICAL_RESISTANCE,	
 	
-	CRITICAL_DAMAGE_CHANCE_CHANGE,
+	MISS_BASE_CHANCE,
+	EVASION_BASE_CHANCE,
+	
+	CRITICAL_DAMAGE_BASE_CHANCE,
 	CRITICAL_DAMAGE_CHANGE,
 	
 	DISTANCE_VISION,
 	
 	RANGE_CHANGE,
-	AREA_CHANGE
+	AREA_CHANGE	
 }
 
 var defaultAtt : Dictionary = {
@@ -48,6 +51,10 @@ var defaultAtt : Dictionary = {
 	CharacterAttributes.MAGIC_RESISTANCE : 0.1,
 	CharacterAttributes.PHYSICAL_RESISTANCE : 0.1,		
 	
-	CharacterAttributes.DISTANCE_VISION: 500
+	CharacterAttributes.DISTANCE_VISION: 500,
+	
+	CharacterAttributes.CRITICAL_DAMAGE_BASE_CHANCE: 0,
+	CharacterAttributes.MISS_BASE_CHANCE: 0,
+	CharacterAttributes.EVASION_BASE_CHANCE: 0
 
 }

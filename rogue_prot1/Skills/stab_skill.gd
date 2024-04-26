@@ -20,7 +20,7 @@ func enter_skill(object_to_run, skill_target = null):
 	limit_time = Time.get_ticks_msec() + (stab_time/rate)
 	
 	
-func _process_skill(delta:float, channeling : float = false):
+func _process_skill(_delta:float, _channeling : float = false):
 	if Time.get_ticks_msec() < limit_time:
 		return 0
 	

@@ -20,7 +20,7 @@ func enter_skill(object_to_run, skill_target = null):
 	limit_time = state_time + (skill_time/rate)
 	next_shoot = state_time + (shoot_time/rate)	
 	
-func _process_skill(delta:float, channeling : float = false):
+func _process_skill(_delta:float, _channeling : float = false):
 	var time = Time.get_ticks_msec()
 	if time > limit_time:
 		return 1
@@ -34,7 +34,7 @@ func _process_skill(delta:float, channeling : float = false):
 func shoot():
 	var new_proj = projectile.instantiate()
 	var dir : Vector3 = target.global_position - actor.global_position
-	var dist = dir.length()
+	
 	dir = dir.normalized()
 	
 	dir.y += 0.05

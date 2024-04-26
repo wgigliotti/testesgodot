@@ -66,6 +66,7 @@ radius = 2.5
 
 [node name="CharacterAttack" type="Node" parent="SignatureSkill"]
 script = ExtResource("8_libmu")
-damage = 30.0
+physical_damage = 20.0
+critical_chance = 0.2
 
 [connection signal="area_entered" from="Pickup" to="." method="_on_pickup_area_entered"]

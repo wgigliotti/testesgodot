@@ -1,11 +1,13 @@
-[gd_scene load_steps=21 format=3 uid="uid://dmh63w2vxvip0"]
+[gd_scene load_steps=23 format=3 uid="uid://dmh63w2vxvip0"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_dtohf"]
 [ext_resource type="PackedScene" uid="uid://d2jgct3hxybpn" path="res://Scenes/Mobs/mob_mage.tscn" id="2_e3su7"]
 [ext_resource type="PackedScene" uid="uid://dsr3qkcxcu6g6" path="res://Scenes/Player/PlayerBarbarian.tscn" id="5_ijhw1"]
 [ext_resource type="PackedScene" uid="uid://cfe1nlpcsckit" path="res://Scenes/Mobs/mob_rogue.tscn" id="5_jy6dl"]
-[ext_resource type="PackedScene" uid="uid://bfp3k6hsebnf2" path="res://Scenes/AttackSpeedBuff.tscn" id="6_bnmjj"]
+[ext_resource type="PackedScene" uid="uid://bfp3k6hsebnf2" path="res://Scenes/Buffs/AttackSpeedBuff.tscn" id="6_bnmjj"]
 [ext_resource type="PackedScene" uid="uid://cleol4tqqu0b7" path="res://Scenes/Mobs/Mob_Archer.tscn" id="6_pwipe"]
+[ext_resource type="PackedScene" uid="uid://1orb01nkoc63" path="res://Scenes/Buffs/life_steal_buff.tscn" id="7_ghyto"]
+[ext_resource type="PackedScene" uid="uid://c48xgoxd6xg1c" path="res://Scenes/Buffs/ThornBuff.tscn" id="8_sxyv7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sw6fo"]
 size = Vector3(160, 2, 160)
@@ -223,3 +225,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.3613, 1, -5.08432)
 
 [node name="AttackSpeedBuff7" parent="." instance=ExtResource("6_bnmjj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8718, 1, -5.08432)
+
+[node name="LifeStealBuff" parent="." instance=ExtResource("7_ghyto")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.76185, 0.638291, 0)
+
+[node name="ThornBuff" parent="." instance=ExtResource("8_sxyv7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.831649, -8.13297)

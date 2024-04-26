@@ -40,7 +40,7 @@ func _on_running_state_physics_processing(delta):
 	player.move(1, delta, mdirection)
 
 
-func _on_idle_state_physics_processing(delta):
+func _on_idle_state_physics_processing(_delta):
 	active_command = player_commands.getCommandJustPressed()
 	
 	if active_command != constants.PlayerCommandEnum.NONE:

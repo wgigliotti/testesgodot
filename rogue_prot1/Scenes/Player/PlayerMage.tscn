@@ -66,6 +66,8 @@ flamestrikeScene = ExtResource("9_uvnnb")
 
 [node name="CharacterAttack" type="Node" parent="SignatureSkill"]
 script = ExtResource("10_4ldg8")
-damage = 200.0
+magic_damage = 100.0
+critical_chance = 0.05
+critical_damage = 2.0
 
 [connection signal="area_entered" from="Pickup" to="." method="_on_pickup_area_entered"]

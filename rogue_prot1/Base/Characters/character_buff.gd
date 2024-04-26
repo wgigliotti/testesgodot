@@ -11,10 +11,10 @@ var time
 var timer : Timer
 
 	
-func on_hit_imp(attacker : CharacterSheet, target : CharacterSheet, attack : CharacterAttack, efficiency : float = 1):
+func on_hit_imp(_attacker : CharacterSheet, _target : CharacterSheet, _attack : CharacterAttack, _efficiency : float = 1):
 	pass
 
-func on_hitted_imp(attacker : CharacterSheet, target : CharacterSheet, attack : CharacterAttack, efficiency : float = 1):
+func on_hitted_imp(_attacker : CharacterSheet, _target : CharacterSheet, _attack : CharacterAttack, _efficiency : float = 1):
 	pass
 
 func attach(character_to : CharacterSheet):

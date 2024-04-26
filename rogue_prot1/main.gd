@@ -19,21 +19,21 @@ func _ready():
 	
 	asLabel.text = "AS: " + str(character.get_character_sheet().get_value(constants.CharacterAttributes.ATTACK_SPEED_CHANGE))
 	character.get_character_sheet().connect_signal_for_property(constants.CharacterAttributes.ATTACK_SPEED_CHANGE, 
-		func(from, to) : asLabel.text = "AS: " + str(to))
+		func(_from, to) : asLabel.text = "AS: " + str(to))
 		
 	hpLabel.text = "HP: " + str(character.get_character_sheet().get_value(constants.CharacterAttributes.HEALTH_CURRENT))
 	character.get_character_sheet().connect_signal_for_property(constants.CharacterAttributes.HEALTH_CURRENT, 
-		func(from, to) : hpLabel.text = "HP: " + str(to))
+		func(_from, to) : hpLabel.text = "HP: " + str(to))
 		
 	msLabel.text = "MS: " + str(character.get_character_sheet().get_value(constants.CharacterAttributes.SPEED))
 	character.get_character_sheet().connect_signal_for_property(constants.CharacterAttributes.SPEED, 
-		func(from, to) : msLabel.text = "MS: " + str(to))
+		func(_from, to) : msLabel.text = "MS: " + str(to))
 		
 	character.get_character_sheet()._on_append_buff.connect(refresh_buffs)
 	character.get_character_sheet()._on_release_buff.connect(refresh_buffs)
 	pass # Replace with function body.
 
-func refresh_buffs(buff):
+func refresh_buffs(_buff):
 	for node in vbox.get_children():
 		node.queue_free()
 	
@@ -44,7 +44,7 @@ func refresh_buffs(buff):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if Input.is_action_just_pressed("mob"):
-		for i in 10:
+		for i in 1:
 			createNewMob()
 		nextMob = Time.get_ticks_msec() + randi_range(0, 1000)
 		
