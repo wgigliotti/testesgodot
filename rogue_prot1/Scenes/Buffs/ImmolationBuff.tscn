@@ -1,0 +1,73 @@
+[gd_scene load_steps=14 format=3 uid="uid://dnvq3ukhli8yg"]
+
+[ext_resource type="Script" path="res://Scenes/Buffs/ImmolationBuff.gd" id="1_7ffw5"]
+[ext_resource type="Shader" uid="uid://5dnyy8ya3hwx" path="res://Scenes/Skills/Flamestrike.tres" id="2_ai2w2"]
+[ext_resource type="Texture2D" uid="uid://b03dr4n4gy12x" path="res://arts/fire/Voronoi01.png" id="3_bqp4l"]
+[ext_resource type="Texture2D" uid="uid://cviif1g5cam21" path="res://arts/fire/Flame02.png" id="4_1e5d2"]
+[ext_resource type="Script" path="res://Base/Scripts/attack.gd" id="5_lk67o"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_mh58f"]
+radius = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ml5jq"]
+render_priority = 0
+shader = ExtResource("2_ai2w2")
+shader_parameter/DissolveSpeed = Vector2(2, 1)
+shader_parameter/DissolvAmmount = 0.236
+shader_parameter/MainTex = ExtResource("4_1e5d2")
+shader_parameter/DissolveTex = ExtResource("3_bqp4l")
+
+[sub_resource type="Curve" id="Curve_el11f"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.175978, 1), 0.0, 0.0, 0, 0, Vector2(0.696035, 0.505494), 0.0, 0.0, 0, 0, Vector2(1, 0.175824), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_jwo4e"]
+curve = SubResource("Curve_el11f")
+
+[sub_resource type="Curve" id="Curve_4fsk3"]
+max_value = 3.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_la4bf"]
+curve = SubResource("Curve_4fsk3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1p00d"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.0
+emission_ring_radius = 0.0
+emission_ring_inner_radius = 1.0
+angle_max = 360.0
+gravity = Vector3(0, 5, 0)
+linear_accel_max = 3.0
+damping_max = 1.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_jwo4e")
+scale_over_velocity_curve = SubResource("CurveTexture_la4bf")
+color = Color(0.764706, 0.768627, 0.784314, 0.545098)
+
+[sub_resource type="QuadMesh" id="QuadMesh_vsl3i"]
+
+[node name="ImmolationBuff" type="Node"]
+script = ExtResource("1_7ffw5")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_mh58f")
+
+[node name="Fire2" type="GPUParticles3D" parent="Area3D"]
+material_override = SubResource("ShaderMaterial_ml5jq")
+amount = 40
+lifetime = 0.4
+speed_scale = 2.0
+fixed_fps = 90
+process_material = SubResource("ParticleProcessMaterial_1p00d")
+draw_pass_1 = SubResource("QuadMesh_vsl3i")
+
+[node name="CharacterAttack" type="Node" parent="."]
+script = ExtResource("5_lk67o")
+magic_damage = 200.0

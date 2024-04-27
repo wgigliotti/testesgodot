@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cvalsjwighg6q"]
+[gd_scene load_steps=19 format=3 uid="uid://cvalsjwighg6q"]
 
 [ext_resource type="Script" path="res://Scenes/Skills/Flamestrike.gd" id="1_i3tyr"]
 [ext_resource type="Shader" uid="uid://5dnyy8ya3hwx" path="res://Scenes/Skills/Flamestrike.tres" id="1_r6mre"]
@@ -13,20 +13,20 @@ shader_parameter/DissolvAmmount = 0.236
 shader_parameter/MainTex = ExtResource("3_4qgia")
 shader_parameter/DissolveTex = ExtResource("2_komm6")
 
-[sub_resource type="Curve" id="Curve_m6tw4"]
+[sub_resource type="Curve" id="Curve_557le"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.175978, 1), 0.0, 0.0, 0, 0, Vector2(0.696035, 0.505494), 0.0, 0.0, 0, 0, Vector2(1, 0.175824), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="CurveTexture" id="CurveTexture_1443f"]
-curve = SubResource("Curve_m6tw4")
+curve = SubResource("Curve_557le")
 
-[sub_resource type="Curve" id="Curve_1262k"]
+[sub_resource type="Curve" id="Curve_7s6gx"]
 max_value = 3.0
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_e1juh"]
-curve = SubResource("Curve_1262k")
+curve = SubResource("Curve_7s6gx")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uymp5"]
 emission_shape = 6
@@ -62,6 +62,21 @@ color = Color(0.325441, 0.325441, 0.325441, 0.584314)
 [sub_resource type="SphereShape3D" id="SphereShape3D_jmitn"]
 radius = 2.0
 
+[sub_resource type="Curve" id="Curve_m6tw4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.175978, 1), 0.0, 0.0, 0, 0, Vector2(0.696035, 0.505494), 0.0, 0.0, 0, 0, Vector2(1, 0.175824), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_a0eu3"]
+curve = SubResource("Curve_m6tw4")
+
+[sub_resource type="Curve" id="Curve_1262k"]
+max_value = 3.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_1sf20"]
+curve = SubResource("Curve_1262k")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tmvc8"]
 emission_shape = 6
 emission_ring_axis = Vector3(0, 1, 0)
@@ -73,8 +88,8 @@ gravity = Vector3(0, 5, 0)
 linear_accel_max = 3.0
 damping_max = 1.0
 scale_max = 5.0
-scale_curve = SubResource("CurveTexture_1443f")
-scale_over_velocity_curve = SubResource("CurveTexture_e1juh")
+scale_curve = SubResource("CurveTexture_a0eu3")
+scale_over_velocity_curve = SubResource("CurveTexture_1sf20")
 color = Color(4, 1.10196, 0.501961, 0.152941)
 
 [node name="Flamestrike" type="Node3D"]
