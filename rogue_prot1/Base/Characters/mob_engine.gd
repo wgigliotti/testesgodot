@@ -56,7 +56,6 @@ func _on_traversing_state_physics_processing(_delta):
 	
 	for candidate in vision.get_overlapping_bodies():
 		
-		print(candidate)
 		target = candidate
 		state_chart.send_event("chase")
 		break

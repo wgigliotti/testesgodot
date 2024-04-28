@@ -192,6 +192,13 @@ offset_right = 70.0
 offset_bottom = 180.0
 grow_horizontal = 2
 
+[node name="fpsLabel" type="Label" parent="HUD"]
+offset_left = 2.0
+offset_top = 84.0
+offset_right = 42.0
+offset_bottom = 107.0
+text = "AS :"
+
 [node name="AttackSpeedBuff" parent="." instance=ExtResource("6_bnmjj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1, 0)
 

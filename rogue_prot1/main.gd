@@ -8,6 +8,7 @@ extends Node
 @onready var asLabel = $HUD/asLabel
 @onready var hpLabel = $HUD/hpLabel
 @onready var msLabel = $HUD/msLabel
+@onready var fpsLabel = $HUD/fpsLabel
 @onready var vbox = $HUD/ColorRect/VBoxContainer
 
 var mobs
@@ -44,9 +45,11 @@ func refresh_buffs(_buff):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if Input.is_action_just_pressed("mob"):
-		for i in 1:
+		for i in 10:
 			createNewMob()
 		nextMob = Time.get_ticks_msec() + randi_range(0, 1000)
+	
+	fpsLabel.text = str(Engine.get_frames_per_second())
 		
 func createNewMob():
 	var pos = randi_range(0,2)

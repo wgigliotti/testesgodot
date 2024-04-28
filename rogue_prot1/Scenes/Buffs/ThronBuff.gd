@@ -4,7 +4,6 @@ class_name ThornBuff
 static var attack : CharacterAttack
 
 static func apply_thorn(attacker : CharacterSheet, target : CharacterSheet, _attack : CharacterAttack, _efficiency : float = 1):
-	print("Entrou")
 	RulesBook.apply_attack(target, attacker, attack, 1.1)
 	RulesBook.heal_character(target, 1)
 

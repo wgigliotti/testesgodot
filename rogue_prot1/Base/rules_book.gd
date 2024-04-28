@@ -40,11 +40,9 @@ func apply_attack(attacker : CharacterSheet, target : CharacterSheet, attack : C
 	
 	var health = target.get_value(constants.CharacterAttributes.HEALTH_CURRENT) - damage
 	target.set_value(constants.CharacterAttributes.HEALTH_CURRENT, health)
-	for buff in attacker.on_hit_buffs:		
-		print(buff.buff_name + " " + str(buff.on_hit))	
+	for buff in attacker.on_hit_buffs:				
 		buff.on_hit.call(attacker, target, attack, efficiency)
 	for buff in target.on_hitted_buffs:
-		print(buff.buff_name + " " + str(buff.on_hitted))		
 		buff.on_hitted.call(attacker, target, attack, efficiency)
 
 func roll_hit_evasion_chances(attacker : CharacterSheet, target : CharacterSheet, attack : CharacterAttack):
