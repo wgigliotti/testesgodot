@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://bgk6n64e54qnj"]
+
+[ext_resource type="PackedScene" uid="uid://nkf6uqf0felc" path="res://player.tscn" id="1_8ksyr"]
+[ext_resource type="Script" path="res://main.gd" id="1_xityk"]
+[ext_resource type="PackedScene" uid="uid://bstcyia6alrtf" path="res://Mob.tscn" id="2_ryt1y"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p3blb"]
+size = Vector3(1000, 1, 1000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_34e60"]
+albedo_color = Color(0.223529, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_p3rbe"]
+size = Vector3(1000, 1, 1000)
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_xityk")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_p3blb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground/CollisionShape3D"]
+material_override = SubResource("StandardMaterial3D_34e60")
+mesh = SubResource("BoxMesh_p3rbe")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.65594, 0.754813, 0, -0.754813, 0.65594, 0, 12.4064, 0)
+
+[node name="player" parent="." instance=ExtResource("1_8ksyr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="Node3D" type="Node3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.971977, 0)
+
+[node name="Camera3D" type="Camera3D" parent="player/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 0.560148, 0.828393, 0, -0.828393, 0.560148, 0, 9.14094, 5.20439)
+fov = 102.1
+
+[node name="mob" parent="." instance=ExtResource("2_ryt1y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 13)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="fpsLabel" type="Label" parent="HUD"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
