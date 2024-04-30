@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 constants="*res://Base/BaseConstants.gd"
 RulesBook="*res://Base/rules_book.gd"
+PlayerManager="*res://externo/template/multiplayer/PlayerManager.gd"
+GameManager="*res://Multiplayer/GameManager.gd"
 
 [editor_plugins]
 

@@ -47,6 +47,7 @@ func get_character_sheet() -> CharacterSheet:
 	return character_sheet
 
 func refreshAnimation():
+	return
 	var animationName = active_animation.name
 	var speed_scale = active_animation.scale
 	var start_time= active_animation.start

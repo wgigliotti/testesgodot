@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://qy8kr6ajqh8e"]
+
+[ext_resource type="Script" path="res://externo/template/multiplayer/lobby.gd" id="1_dhqui"]
+
+[node name="Lobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dhqui")
+
+[node name="message" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -44.0
+offset_top = -42.0
+offset_right = 44.0
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Connecting	..."
+
+[node name="playerPanel" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -152.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 224.0
+grow_horizontal = 0
+color = Color(0.611765, 0.611765, 0.611765, 0.160784)
+
+[node name="playerList" type="VBoxContainer" parent="playerPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RefreshPlayerList" type="Timer" parent="playerPanel/playerList"]
+autostart = true
+
+[connection signal="timeout" from="playerPanel/playerList/RefreshPlayerList" to="." method="_on_refresh_player_list_timeout"]

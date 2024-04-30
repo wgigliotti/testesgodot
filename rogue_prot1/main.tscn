@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dmh63w2vxvip0"]
+[gd_scene load_steps=23 format=3 uid="uid://dmh63w2vxvip0"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_dtohf"]
 [ext_resource type="PackedScene" uid="uid://d2jgct3hxybpn" path="res://Scenes/Mobs/mob_mage.tscn" id="2_e3su7"]
@@ -42,25 +42,6 @@ size = Vector2(10, 100)
 [sub_resource type="BoxMesh" id="BoxMesh_nymsd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_squl0"]
-
-[sub_resource type="GDScript" id="GDScript_wwf2l"]
-script/source = "@icon(\"res://arts/icons/STATE.png\")
-extends Node
-class_name State
-
-
-signal state_transition
-var object 
-
-func enter(object_to_run):
-	object = object_to_run
-	
-func exit():
-	pass
-	
-func update(_delta:float):
-	pass
-"
 
 [sub_resource type="Environment" id="Environment_jjgg1"]
 background_mode = 1
@@ -144,11 +125,6 @@ mesh = SubResource("BoxMesh_nymsd")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("BoxShape3D_squl0")
-
-[node name="State" type="Node" parent="."]
-script = SubResource("GDScript_wwf2l")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
